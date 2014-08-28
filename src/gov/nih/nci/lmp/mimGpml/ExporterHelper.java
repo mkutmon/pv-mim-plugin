@@ -58,13 +58,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.xmlbeans.XmlCalendar;
-import org.pathvisio.core.biopax.BiopaxElement;
 import org.pathvisio.core.biopax.BiopaxNode;
 import org.pathvisio.core.biopax.PublicationXref;
 import org.pathvisio.core.debug.Logger;
@@ -219,6 +217,8 @@ public class ExporterHelper extends CommonHelper {
 				break;
 			case BIOPAX:
 				mapBiopax(pwElem);
+				break;
+			default:
 				break;
 			}
 		}
@@ -814,7 +814,7 @@ public class ExporterHelper extends CommonHelper {
 	 * @return the string
 	 */
 	private String mapRelationshipXRef(PathwayElement pwElem) {
-		if (pwElem.getDataSource() != null && pwElem.getGeneID() != null) {
+		if (pwElem.getDataSource() != null && pwElem.getElementID() != null) {
 			String visId = getUniqueVisId();
 
 			// Create correct type of XRef element
@@ -837,7 +837,7 @@ public class ExporterHelper extends CommonHelper {
 			}
 
 			relXRef.setDb(pwElem.getDataSource().getFullName());
-			relXRef.setId(pwElem.getGeneID());
+			relXRef.setId(pwElem.getElementID());
 
 			return visId;
 		} else {
@@ -886,10 +886,7 @@ public class ExporterHelper extends CommonHelper {
 	 *            the pathway element
 	 */
 	private void mapBiopax(PathwayElement pwElem) {
-		BiopaxElement refElem = pw.getBiopax();
-		
-		Collection<BiopaxNode> bpElemColl = refElem.getElements();
-		for(BiopaxNode node : bpElemColl) {
+		for(BiopaxNode node : pwElem.getBiopaxReferenceManager().getReferences()) {
 			PublicationXref xref = (PublicationXref) node;
 			PublicationXRefType mimPubXRef = mb.addNewPublicationXRef();
 
@@ -1007,26 +1004,26 @@ public class ExporterHelper extends CommonHelper {
 	 *            the gpml data node type
 	 * @return the schema type
 	 */
-	private static GroupEnumType.Enum convertGroup(String gpmlGroupType) {
-
-		HashMap<String, GroupEnumType.Enum> groupHash = new HashMap<String, GroupEnumType.Enum>();
-
-		groupHash.put("EntityWithFeatures", GroupEnumType.ENTITY_WITH_FEATURES);
-		groupHash.put("Group", GroupEnumType.GENERIC);
-
-		GroupEnumType.Enum mimGroupType = null;
-
-		if (groupHash.get(gpmlGroupType) != null) {
-			mimGroupType = groupHash.get(gpmlGroupType);
-		} else {
-			mimGroupType = GroupEnumType.GENERIC;
-			Logger.log
-					.info("Pathway contains an group type not supported in MIM: "
-							+ gpmlGroupType);
-		}
-
-		return mimGroupType;
-	}
+//	private static GroupEnumType.Enum convertGroup(String gpmlGroupType) {
+//
+//		HashMap<String, GroupEnumType.Enum> groupHash = new HashMap<String, GroupEnumType.Enum>();
+//
+//		groupHash.put("EntityWithFeatures", GroupEnumType.ENTITY_WITH_FEATURES);
+//		groupHash.put("Group", GroupEnumType.GENERIC);
+//
+//		GroupEnumType.Enum mimGroupType = null;
+//
+//		if (groupHash.get(gpmlGroupType) != null) {
+//			mimGroupType = groupHash.get(gpmlGroupType);
+//		} else {
+//			mimGroupType = GroupEnumType.GENERIC;
+//			Logger.log
+//					.info("Pathway contains an group type not supported in MIM: "
+//							+ gpmlGroupType);
+//		}
+//
+//		return mimGroupType;
+//	}
 
 	/**
 	 * Export file.

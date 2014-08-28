@@ -60,7 +60,6 @@ import org.apache.commons.collections.BidiMap;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.bridgedb.DataSource;
-import org.pathvisio.core.biopax.BiopaxElement;
 import org.pathvisio.core.biopax.PublicationXref;
 import org.pathvisio.core.debug.Logger;
 import org.pathvisio.core.model.AnchorType;
@@ -140,14 +139,14 @@ public class ImporterHelper extends CommonHelper {
 	/**
 	 * Process entity glyph.
 	 */
-	private void processEntityGlyph() {
-		List<EntityGlyphType> entGlyphTypeList = this.visDoc.getDiagram()
-				.getEntityGlyphList();
-
-		for (EntityGlyphType entGlyphType : entGlyphTypeList) {
-			System.out.println("Entity: " + entGlyphType.getDisplayName());
-		}
-	}
+//	private void processEntityGlyph() {
+//		List<EntityGlyphType> entGlyphTypeList = this.visDoc.getDiagram()
+//				.getEntityGlyphList();
+//
+//		for (EntityGlyphType entGlyphType : entGlyphTypeList) {
+//			System.out.println("Entity: " + entGlyphType.getDisplayName());
+//		}
+//	}
 
 	/**
 	 * Recalculate lines. Helps to adjust anchors on lines by clearing out cache.
@@ -230,9 +229,9 @@ public class ImporterHelper extends CommonHelper {
 		}
 
 		// Add element that contains BioPAX
-		PathwayElement biopax = PathwayElement
-				.createPathwayElement(ObjectType.BIOPAX);
-		pw.add(biopax);
+//		PathwayElement biopax = PathwayElement
+//				.createPathwayElement(ObjectType.BIOPAX);
+//		pw.add(biopax);
 
 		PathwayElement info = PathwayElement
 				.createPathwayElement(ObjectType.INFOBOX);
@@ -928,7 +927,7 @@ public class ImporterHelper extends CommonHelper {
 
 				pwElem.setDataSource(DataSource.getByFullName(mimRelXRef
 						.getDb()));
-				pwElem.setGeneID(mimRelXRef.getId());
+				pwElem.setElementID(mimRelXRef.getId());
 
 				//DEBUG
 				// Logger.log.debug("RelXRef ID: " + mimRelXRef.getId());
@@ -966,8 +965,6 @@ public class ImporterHelper extends CommonHelper {
 
 				Logger.log.debug("PubXRef xmlText: " + mimPubXRef.xmlText());
 
-				BiopaxElement refMgr = pw.getBiopax();
-
 				PublicationXref gpmlXRef = new PublicationXref();
 
 				Logger.log.debug("PubXRef Id1: " + mimPubXRef.getId());
@@ -984,7 +981,7 @@ public class ImporterHelper extends CommonHelper {
 					Logger.log.debug("Author: " + author);
 				}
 
-				refMgr.addElement(gpmlXRef);
+				pwElem.getBiopaxReferenceManager().addElementReference(gpmlXRef);
 
 				mimBioRefs.add(mimBioRef);
 			}
