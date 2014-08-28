@@ -149,6 +149,10 @@ public class ExporterHelper extends CommonHelper {
 		}
 
 		for (PathwayElement pwElem : pw.getDataObjects()) {
+			
+			if(pwElem.getBiopaxReferenceManager().getReferences().size() > 0) {
+				mapBiopax(pwElem);
+			}
 
 			// double[] tmp = pw.getMBoardSize();
 			//
@@ -215,9 +219,9 @@ public class ExporterHelper extends CommonHelper {
 			case GROUP:
 				mapGroup(pwElem);
 				break;
-			case BIOPAX:
-				mapBiopax(pwElem);
-				break;
+//			case BIOPAX:
+//				mapBiopax(pwElem);
+//				break;
 			default:
 				break;
 			}
@@ -886,8 +890,10 @@ public class ExporterHelper extends CommonHelper {
 	 *            the pathway element
 	 */
 	private void mapBiopax(PathwayElement pwElem) {
-		for(BiopaxNode node : pwElem.getBiopaxReferenceManager().getReferences()) {
+		for(BiopaxNode node : pwElem.getBiopaxReferenceManager().getPublicationXRefs()) {
+			
 			PublicationXref xref = (PublicationXref) node;
+			System.out.println(xref);
 			PublicationXRefType mimPubXRef = mb.addNewPublicationXRef();
 
 			mimPubXRef.setVisId(xref.getId());

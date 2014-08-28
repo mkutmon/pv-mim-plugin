@@ -72,8 +72,7 @@ public class EntityExportTest {
 	private static final File DIR = new File("resources");
 
 	/** The Constant TEST_FILE. */
-	private static final File TEST_FILE = new File(DIR,
-			"entityTest.gpml");
+	private static final File TEST_FILE = new File(DIR, "entityTest.gpml");
 
 	/** The vis doc. */
 	private DiagramDocument visDoc;

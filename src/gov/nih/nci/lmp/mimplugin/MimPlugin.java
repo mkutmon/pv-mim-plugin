@@ -87,7 +87,6 @@ import org.pathvisio.core.view.VPathway;
 import org.pathvisio.core.view.VPathwayElement;
 import org.pathvisio.desktop.PvDesktop;
 import org.pathvisio.desktop.plugin.Plugin;
-import org.pathvisio.gui.ObjectsPane;
 import org.pathvisio.gui.PathwayElementMenuListener.PathwayElementMenuHook;
 import org.pathvisio.gui.handler.PropertyDisplayManager;
 
@@ -106,11 +105,9 @@ public class MimPlugin implements Plugin, Engine.ApplicationEventListener
     private static AnchorType INTRANS_ANCHOR;
     public static final GroupStyle SIMPLE_ENTITY_GROUP = GroupStyle.create("EntityWithFeatures", true);
     private static MimObjectsPane mimObjectsPane;
-    private PvDesktop desktop;
 
     public void init(PvDesktop desktop)
 	{
-        this.desktop = desktop;
         MimObjectsPane.registerShapes();
         MimImplicitComplexGroup.registerGroup();
         Engine e = desktop.getSwingEngine().getEngine();
@@ -133,8 +130,7 @@ public class MimPlugin implements Plugin, Engine.ApplicationEventListener
 
         mimObjectsPane = new MimObjectsPane(desktop, e);
 		desktop.getSideBarTabbedPane().add("MIM Glyphs", mimObjectsPane);
-        /* show mim pane to top*/
-        desktop.getSideBarTabbedPane().setSelectedComponent(mimObjectsPane);
+      
         if (!PreferenceManager.getCurrent().get(MimPreferencesDlg.MIMPreference.PREFERRED_PANEL).equals("MIM Glyphs")) {
             int panelId = desktop.getSideBarTabbedPane().indexOfTab(PreferenceManager.getCurrent().get(MimPreferencesDlg.MIMPreference.PREFERRED_PANEL));
             Logger.log.info("preference manager preferred panel" + panelId);
