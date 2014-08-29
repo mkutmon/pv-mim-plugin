@@ -779,11 +779,11 @@ public class ImporterHelper extends CommonHelper {
 				}
 			}
 
+			pw.add(pwElem);
+			
 			// Map PublicationXRefs
 			List<String> mimBioRefs = mapPublicationXRefs(glyph, pwElem);
 			pwElem.setBiopaxRefs(mimBioRefs);
-			
-			pw.add(pwElem);
 		}
 	}
 
@@ -947,7 +947,6 @@ public class ImporterHelper extends CommonHelper {
 		Logger.log.debug("mimBioRefs mapPubXRefs: " + glyph.sizeOfMimBioRefArray());
 
 		for (String mimBioRef : glyph.getMimBioRefList()) {
-			System.out.println(mimBioRef);
 			XmlObject o1 = getVisXmlObjectById(visDoc, mimBioRef);
 
 			Logger.log.debug("o1.class1 mapPubXRefs: " + o1.getClass());
